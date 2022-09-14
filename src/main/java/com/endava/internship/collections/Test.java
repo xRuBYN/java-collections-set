@@ -30,7 +30,7 @@ public class Test {
         //traverseInOrder(set1.tree.head);
         //System.out.println(set1.contains(new Integer(23)));
 
-        System.out.println(set1.contains(student1));
+        System.out.println(set1.contains(student3));
 
     }
 

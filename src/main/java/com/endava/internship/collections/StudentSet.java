@@ -151,15 +151,16 @@ class BTree {
         }
     }
 
-    public boolean searchElement(Node tree, Student value) {
-        if (tree != null) {
-            if(tree.value.compareTo(value) == 0) {
-                return true;
-            }
-            searchElement(tree.left,value);
-            searchElement(tree.right,value);
+    public boolean searchElement(Node current, Student value) {
+        if (current == null) {
+            return false;
         }
-        return false;
+        if (current.value.compareTo(value) == 0) {
+            return true;
+        }
+        return (current.value.compareTo(value) > 0 ? true : false)
+                ? searchElement(current.left, value)
+                : searchElement(current.right, value);
     }
 
 
