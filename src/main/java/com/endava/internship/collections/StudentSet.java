@@ -3,23 +3,37 @@ package com.endava.internship.collections;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.function.Consumer;
 
 public class StudentSet implements Set<Student> {
+    private BTree tree;
+
+    public StudentSet() {
+        tree = new BTree();
+    }
+
     @Override
     public int size() {
         //TODO
-        return 0;
+        return tree.getSize();
     }
 
     @Override
     public boolean isEmpty() {
         //TODO
+        if(tree.head == null) {
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean contains(Object o) {
         //TODO
+        if(o instanceof Student) {
+            return tree.searchElement(tree.head,(Student)o);
+        }
         return false;
     }
 
@@ -44,7 +58,7 @@ public class StudentSet implements Set<Student> {
     @Override
     public boolean add(Student student) {
         //TODO
-        return false;
+        return tree.addNode(student);
     }
 
     @Override
@@ -56,6 +70,7 @@ public class StudentSet implements Set<Student> {
     @Override
     public void clear() {
         //TODO
+        tree.head = null;
     }
 
     @Override
@@ -63,6 +78,13 @@ public class StudentSet implements Set<Student> {
         //TODO
         return false;
     }
+
+    @Override
+    public String toString() {
+        tree.traverseInOrder(tree.head);
+        return " ";
+    }
+
 
     @Override
     public boolean containsAll(Collection<?> collection) {
@@ -80,5 +102,91 @@ public class StudentSet implements Set<Student> {
     public boolean removeAll(Collection<?> collection) {
         //Ignore this for homework
         throw new UnsupportedOperationException();
+    }
+
+
+}
+
+class Node {
+    //Node head;
+    Node left;
+    Node right;
+    Student value;
+
+    public Node() {
+    }
+
+    public Node(Student value) {
+        this.left = null;
+        this.right = null;
+        this.value = value;
+    }
+
+}
+
+class BTree {
+    Node head;
+    private int size;
+    private int preSize;
+    private Node insert(Node root, Student value) {
+        if (root == null) {
+            size++;
+            return new Node(value);
+
+        } else if (root.value.compareTo(value) < 0) {
+            root.right = insert(root.right, value);
+
+        } else if (root.value.compareTo(value) > 0) {
+
+            root.left = insert(root.left, value);
+        }
+        return root;
+
+    }
+    public void traverseInOrder(Node tree) {
+        if (tree != null) {
+            traverseInOrder(tree.left);
+            System.out.println(tree.value);
+            traverseInOrder(tree.right);
+        }
+    }
+
+    public boolean searchElement(Node tree, Student value) {
+        if (tree != null) {
+            if(tree.value.compareTo(value) == 0) {
+                return true;
+            }
+            searchElement(tree.left,value);
+            searchElement(tree.right,value);
+        }
+        return false;
+    }
+
+
+    public boolean _insert(Student value) {
+        if(head == null) {
+            head = new Node(value);
+            return true;
+        } else if (head.value.compareTo(value) < 0) {
+            head.right = new Node(value);
+            return true;
+        } else if (head.value.compareTo(value) > 0) {
+            head.left = new Node(value);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addNode(Student student) {
+        head = insert(head, student);
+        if(size > preSize) {
+            preSize = size;
+            return true;
+        }
+        return false;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
