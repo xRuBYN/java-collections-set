@@ -1,9 +1,6 @@
 package com.endava.internship.collections;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class StudentSet implements Set<Student> {
@@ -13,15 +10,56 @@ public class StudentSet implements Set<Student> {
         tree = new BTree();
     }
 
+
+    private class StudentItr implements Iterator<Student>
+    {
+        private Stack<Node> stack;
+        private Student last;
+        public StudentItr (){
+            stack = new Stack<>();
+            Node current = tree.head;
+
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public Student next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            last = stack.peek().value;
+            Node tmp = stack.peek().right;
+            stack.pop();
+
+            while (tmp != null) {
+                stack.push(tmp);
+                tmp = tmp.left;
+            }
+            return last;
+        }
+
+
+        @Override
+        public void forEachRemaining(Consumer<? super Student> action) {
+            Iterator.super.forEachRemaining(action);
+        }
+    }
+
     @Override
     public int size() {
-        //TODO
         return tree.getSize();
     }
 
     @Override
     public boolean isEmpty() {
-        //TODO
         if(tree.head == null) {
             return true;
         }
@@ -30,7 +68,6 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public boolean contains(Object o) {
-        //TODO
         if(o instanceof Student) {
             return tree.searchElement(tree.head,(Student)o);
         }
@@ -39,44 +76,52 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public Iterator<Student> iterator() {
-        //TODO
-        return null;
+        return new StudentItr();
     }
 
     @Override
     public Object[] toArray() {
-        //TODO
-        return new Object[0];
+        return tree.transform();
     }
 
     @Override
     public <T> T[] toArray(T[] ts) {
-        //TODO
-        return null;
+        List<T> list = new ArrayList<>();
+        for (Student student : this) {
+            list.add((T)student);
+        }
+        return list.toArray(ts);
     }
 
     @Override
     public boolean add(Student student) {
-        //TODO
         return tree.addNode(student);
     }
 
     @Override
     public boolean remove(Object o) {
-        //TODO
+        if(o instanceof Student) {
+            return tree.delete((Student) o);
+        }
         return false;
     }
 
     @Override
     public void clear() {
-        //TODO
         tree.head = null;
     }
 
     @Override
     public boolean addAll(Collection<? extends Student> collection) {
-        //TODO
-        return false;
+        boolean check = false;
+        for(Object o : collection) {
+            boolean b = tree.addNode((Student) o);
+            if(b)
+            {
+                check = true;
+            }
+        }
+        return check;
     }
 
     @Override
@@ -84,7 +129,6 @@ public class StudentSet implements Set<Student> {
         tree.traverseInOrder(tree.head);
         return " ";
     }
-
 
     @Override
     public boolean containsAll(Collection<?> collection) {
@@ -126,11 +170,11 @@ class Node {
 
 class BTree {
     Node head;
+    Object[] arr;
     private int size;
     private int preSize;
     private Node insert(Node root, Student value) {
         if (root == null) {
-            size++;
             return new Node(value);
 
         } else if (root.value.compareTo(value) < 0) {
@@ -164,21 +208,9 @@ class BTree {
     }
 
 
-    public boolean _insert(Student value) {
-        if(head == null) {
-            head = new Node(value);
-            return true;
-        } else if (head.value.compareTo(value) < 0) {
-            head.right = new Node(value);
-            return true;
-        } else if (head.value.compareTo(value) > 0) {
-            head.left = new Node(value);
-            return true;
-        }
-        return false;
-    }
 
     public boolean addNode(Student student) {
+        size = getSize();
         head = insert(head, student);
         if(size > preSize) {
             preSize = size;
@@ -187,7 +219,105 @@ class BTree {
         return false;
     }
 
-    public int getSize() {
-        return size;
+    private int getSizeRec(Node root){
+        if(root==null){
+            return 0;
+        }
+        return 1 + getSizeRec(root.left) + getSizeRec(root.right);
     }
+    public int getSize() {
+        return getSizeRec(head);
+    }
+
+    public boolean delete(Student o) {
+        head = deleteRec(head,o);
+        return true;
+    }
+    private Node deleteRec(Node current, Student value) {
+        Node parent = null;
+        Node root = current;
+
+        while(root != null && root.value.compareTo(value) != 0) {
+            parent = root;
+
+            if(root.value.compareTo(value) > 0) {
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+
+        if(root == null) {
+            return current;
+        }
+
+        if(root.left == null && root.right == null) {
+            if(root != current) {
+                if(parent.left == root) {
+                    parent.left = null;
+
+                } else {
+                    parent.right = null;
+
+                }
+            }
+            else {
+                current = null;
+
+            }
+        }
+
+        else if(current.left != null && current.right != null) {
+            Node successor = getMinimumValue(root.right) ;
+            Student student = successor.value;
+            deleteRec(current,successor.value);
+            root.value = student;
+        }
+        else
+        {
+            Node child = (root.left != null) ? root.left : root.right;
+
+            if(root != current) {
+                if(root == parent.left) {
+                    parent.left = child;
+                } else {
+                    parent.right = child;
+                }
+            }
+            else  {
+                current = child;
+            }
+        }
+        return current;
+    }
+
+    private Node getMinimumValue(Node current) {
+        while(current.left != null) {
+            current = current.left;
+        }
+        return current;
+    }
+    private int transformTreeInArray(Node current, Object[] arr, int i) {
+        if(current == null) {
+            return i;
+        }
+        if(current.left != null) {
+            i = transformTreeInArray(current.left,arr,i);
+        }
+        arr[i] = current.value;
+        i++;
+        if(current.right != null) {
+            i = transformTreeInArray(current.right,arr,i);
+        }
+        return i;
+    }
+    public Object[] transform() {
+        size = getSize();
+        arr = new Object[size];
+        int i = 0;
+        transformTreeInArray(head,arr,i);
+        return arr;
+    }
+
+
 }
