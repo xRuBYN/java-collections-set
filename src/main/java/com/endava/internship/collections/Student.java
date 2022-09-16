@@ -19,11 +19,17 @@ public class Student implements Comparable<Student>//TODO consider implementing 
         this.details = details;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-    public String getDetails() { return details; }
+    public String getDetails() {
+        return details;
+    }
 
     /*
     TODO consider overriding any methods for this object to function properly within a collection:
@@ -45,18 +51,18 @@ public class Student implements Comparable<Student>//TODO consider implementing 
     public int hashCode() {
         return Objects.hash(getName(), getDateOfBirth());
     }
+
     //if this element equal with compare element return 0
     //if this element less than compare element return negative value
     //if this element more than compare element return positive value
     @Override
     public int compareTo(Student o) {
-        if(0 == this.name.compareTo(o.name)) {
-            if(this.dateOfBirth.compareTo(o.dateOfBirth) < 0) {
+        if (0 == this.name.compareTo(o.name)) {
+            if (this.dateOfBirth.compareTo(o.dateOfBirth) < 0) {
                 return -1;
-            } else if(this.dateOfBirth.compareTo(o.dateOfBirth) > 0) {
+            } else if (this.dateOfBirth.compareTo(o.dateOfBirth) > 0) {
                 return 1;
-            }
-            else
+            } else
                 return 0;
         } else if (0 > this.name.compareTo(o.name)) {
             return -1;
