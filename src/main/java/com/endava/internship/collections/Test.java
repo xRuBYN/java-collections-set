@@ -17,9 +17,6 @@ public class Test {
         Student student3 = new Student("Rubin", LocalDate.of(2000, 12, 8), "student");
         Student student4 = new Student("Catalin", LocalDate.of(2000, 12, 9), "student");
         set.add(student);
-        set.add(student1);
-        set.add(student2);
-        set.add(student3);
 
 
 //        set.stream().forEach(System.out :: println);
@@ -37,6 +34,8 @@ public class Test {
         boolean add98 = set1.remove(student1); //false
         boolean add8 = set1.add(student1); //true
         boolean add9 = set1.add(student4); //true
+        System.out.println(set1);
+        set1.removeAll(set);
         System.out.println(set1);
 
         //set1.stream().forEach(System.out :: println);

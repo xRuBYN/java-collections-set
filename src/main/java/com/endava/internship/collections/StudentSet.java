@@ -131,20 +131,34 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public boolean containsAll(Collection<?> collection) {
-        //Ignore this for homework
-        throw new UnsupportedOperationException();
+        for(Object student: collection) {
+            if(!contains(student)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean retainAll(Collection<?> collection) {
-        //Ignore this for homework
-        throw new UnsupportedOperationException();
+        boolean retain = false;
+        for(Student student: this) {
+            if(!collection.contains(student)) {
+                remove(student);
+                retain = true;
+            }
+        }
+        return retain;
     }
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        //Ignore this for homework
-        throw new UnsupportedOperationException();
+        for(Object student: collection) {
+            if(!remove(student)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
