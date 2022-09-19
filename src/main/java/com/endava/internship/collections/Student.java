@@ -50,12 +50,7 @@ Student implements Comparable<Student>//TODO consider implementing any interface
     @Override
     public int compareTo(Student o) {
         if (0 == this.name.compareTo(o.name)) {
-            if (this.dateOfBirth.compareTo(o.dateOfBirth) < 0) {
-                return -1;
-            } else if (this.dateOfBirth.compareTo(o.dateOfBirth) > 0) {
-                return 1;
-            } else
-                return 0;
+            return Integer.compare(this.dateOfBirth.compareTo(o.dateOfBirth), 0);
         } else if (0 > this.name.compareTo(o.name)) {
             return -1;
         } else
