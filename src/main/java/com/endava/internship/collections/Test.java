@@ -37,9 +37,8 @@ public class Test {
         System.out.println(set1);
 
 
-        for(Student s: set1) {
-            System.out.println(s);
-        }
+
+
 
         //set1.stream().forEach(System.out :: println);
         //traverseInOrder(set1.tree.head);

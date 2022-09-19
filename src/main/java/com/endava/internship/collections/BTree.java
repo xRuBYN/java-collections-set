@@ -1,47 +1,57 @@
 package com.endava.internship.collections;
 
 public class BTree {
-    Node head;
-    Object[] arr;
+    private Node head;
+    private Object[] arr;
     private int size;
     private int preSize;
+
+    private StringBuilder str;
+
+    public BTree(){
+        str = new StringBuilder();
+    }
+
+    public Node getHead() {
+        return head;
+    }
+
+    public void setHead(Node head) {
+        this.head = head;
+    }
 
     private Node insert(Node root, Student value) {
         if (root == null) {
             size++;
             return new Node(value);
-
-        } else if (root.value.compareTo(value) < 0) {
-            root.right = insert(root.right, value);
-
-        } else if (root.value.compareTo(value) > 0) {
-
-            root.left = insert(root.left, value);
+        } else if (root.getValue().compareTo(value) < 0) {
+            root.setRight(insert(root.getRight(), value));
+        } else if (root.getValue().compareTo(value) > 0) {
+            root.setLeft(insert(root.getLeft(), value));
         }
         return root;
-
     }
 
-    public void traverseInOrder(Node tree) {
+    public StringBuilder traverseInOrder(Node tree) {
         if (tree != null) {
-            traverseInOrder(tree.left);
-            System.out.println(tree.value);
-            traverseInOrder(tree.right);
+            traverseInOrder(tree.getLeft());
+            str.append(tree.getValue()).append("\n");
+            traverseInOrder(tree.getRight());
         }
+        return str;
     }
 
     public boolean searchElement(Node current, Student value) {
         if (current == null) {
             return false;
         }
-        if (current.value.compareTo(value) == 0) {
+        if (current.getValue().compareTo(value) == 0) {
             return true;
         }
-        return (current.value.compareTo(value) > 0 ? true : false)
-                ? searchElement(current.left, value)
-                : searchElement(current.right, value);
+        return (current.getValue().compareTo(value) > 0)
+                ? searchElement(current.getLeft(), value)
+                : searchElement(current.getRight(), value);
     }
-
 
     public boolean addNode(Student student) {
         head = insert(head, student);
@@ -56,7 +66,7 @@ public class BTree {
         if (root == null) {
             return 0;
         }
-        return 1 + getSizeRec(root.left) + getSizeRec(root.right);
+        return 1 + getSizeRec(root.getLeft()) + getSizeRec(root.getRight());
     }
 
     public int getSize() {
@@ -77,47 +87,39 @@ public class BTree {
     private Node deleteRec(Node root, Student value) {
         Node parent = null;
         Node current = root;
-
-        while (current != null && current.value.compareTo(value) != 0) {
+        while (current != null && current.getValue().compareTo(value) != 0) {
             parent = current;
-
-            if (current.value.compareTo(value) > 0) {
-                current = current.left;
+            if (current.getValue().compareTo(value) > 0) {
+                current = current.getLeft();
             } else {
-                current = current.right;
+                current = current.getRight();
             }
         }
-
         if (current == null) {
             return root;
         }
-
-        if (current.left == null && current.right == null) {
+        if (current.getLeft() == null && current.getRight() == null) {
             if (current != root) {
-                if (parent.left == current) {
-                    parent.left = null;
-
+                if (parent.getLeft() == current) {
+                    parent.setLeft(null);
                 } else {
-                    parent.right = null;
-
+                    parent.setRight(null);
                 }
             } else {
                 root = null;
-
             }
-        } else if (root.left != null && root.right != null) {
-            Node successor = getMinimumValue(current.right);
-            Student student = successor.value;
-            deleteRec(root, successor.value);
-            current.value = student;
+        } else if (root.getLeft() != null && root.getRight() != null) {
+            Node successor = getMinimumValue(current.getRight());
+            Student student = successor.getValue();
+            deleteRec(root, successor.getValue());
+            current.setValue(student);
         } else {
-            Node child = (current.left != null) ? current.left : current.right;
-
+            Node child = (current.getLeft() != null) ? current.getLeft() : current.getRight();
             if (current != root) {
-                if (current == parent.left) {
-                    parent.left = child;
+                if (current == parent.getLeft()) {
+                    parent.setLeft(child);
                 } else {
-                    parent.right = child;
+                    parent.setRight(child);
                 }
             } else {
                 root = child;
@@ -127,8 +129,8 @@ public class BTree {
     }
 
     private Node getMinimumValue(Node current) {
-        while (current.left != null) {
-            current = current.left;
+        while (current.getLeft() != null) {
+            current = current.getLeft();
         }
         return current;
     }
@@ -137,13 +139,13 @@ public class BTree {
         if (current == null) {
             return i;
         }
-        if (current.left != null) {
-            i = transformTreeInArray(current.left, arr, i);
+        if (current.getLeft() != null) {
+            i = transformTreeInArray(current.getLeft(), arr, i);
         }
-        arr[i] = current.value;
+        arr[i] = current.getValue();
         i++;
-        if (current.right != null) {
-            i = transformTreeInArray(current.right, arr, i);
+        if (current.getRight() != null) {
+            i = transformTreeInArray(current.getRight(), arr, i);
         }
         return i;
     }
@@ -155,6 +157,4 @@ public class BTree {
         transformTreeInArray(head, arr, i);
         return arr;
     }
-
-
 }

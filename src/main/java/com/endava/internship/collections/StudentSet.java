@@ -1,15 +1,21 @@
 package com.endava.internship.collections;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Collection;
+import java.util.Stack;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class StudentSet implements Set<Student> {
+
     private BTree tree;
 
     public StudentSet() {
         tree = new BTree();
     }
-
 
     @Override
     public int size() {
@@ -18,33 +24,28 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public boolean isEmpty() {
-        if (tree.head == null) {
-            return true;
-        }
-        return false;
+        return tree.getHead() == null;
     }
 
     @Override
     public boolean contains(Object o) {
         if (o instanceof Student) {
-            return tree.searchElement(tree.head, (Student) o);
+            return tree.searchElement(tree.getHead(), (Student) o);
         }
         return false;
     }
 
     @Override
     public Iterator<Student> iterator() {
-       return new Iterator<Student>() {
+        return new Iterator<Student>() {
             private Stack<Node> stack;
             private Student last;
-
             {
                 stack = new Stack<>();
-                Node current = tree.head;
-
+                Node current = tree.getHead();
                 while (current != null) {
                     stack.push(current);
-                    current = current.left;
+                    current = current.getLeft();
                 }
             }
 
@@ -58,13 +59,13 @@ public class StudentSet implements Set<Student> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                last = stack.peek().value;
-                Node tmp = stack.peek().right;
+                last = stack.peek().getValue();
+                Node tmp = stack.peek().getRight();
                 stack.pop();
 
                 while (tmp != null) {
                     stack.push(tmp);
-                    tmp = tmp.left;
+                    tmp = tmp.getLeft();
                 }
                 return last;
             }
@@ -106,7 +107,7 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public void clear() {
-        tree.head = null;
+        tree.setHead(null);
     }
 
     @Override
@@ -123,8 +124,7 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public String toString() {
-        tree.traverseInOrder(tree.head);
-        return " ";
+        return tree.traverseInOrder(tree.getHead()).toString();
     }
 
     @Override
