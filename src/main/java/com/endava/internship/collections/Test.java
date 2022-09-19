@@ -35,8 +35,11 @@ public class Test {
         boolean add8 = set1.add(student1); //true
         boolean add9 = set1.add(student4); //true
         System.out.println(set1);
-        set1.removeAll(set);
-        System.out.println(set1);
+
+
+        for(Student s: set1) {
+            System.out.println(s);
+        }
 
         //set1.stream().forEach(System.out :: println);
         //traverseInOrder(set1.tree.head);
@@ -69,7 +72,6 @@ public class Test {
 
         Set<Integer> temp = new TreeSet<>();
         Iterator<Student> iterator = list1.iterator();
-
     }
 
 }
