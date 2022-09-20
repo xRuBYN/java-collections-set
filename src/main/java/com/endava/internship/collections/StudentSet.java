@@ -124,7 +124,7 @@ public class StudentSet implements Set<Student> {
 
     @Override
     public String toString() {
-        return tree.traverseInOrder(tree.getHead()).toString();
+        return tree.traverseInOrder(tree.getHead());
     }
 
     @Override

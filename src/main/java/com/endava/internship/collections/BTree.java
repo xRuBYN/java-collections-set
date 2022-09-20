@@ -32,13 +32,13 @@ public class BTree {
         return root;
     }
 
-    public StringBuilder traverseInOrder(Node tree) {
+    public String traverseInOrder(Node tree) {
         if (tree != null) {
             traverseInOrder(tree.getLeft());
             str.append(tree.getValue()).append("\n");
             traverseInOrder(tree.getRight());
         }
-        return str;
+        return str.toString();
     }
 
     public boolean searchElement(Node current, Student value) {

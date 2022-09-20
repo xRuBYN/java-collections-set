@@ -44,9 +44,6 @@ Student implements Comparable<Student>//TODO consider implementing any interface
         return Objects.hash(getName(), getDateOfBirth());
     }
 
-    //if this element equal with compare element return 0
-    //if this element less than compare element return negative value
-    //if this element more than compare element return positive value
     @Override
     public int compareTo(Student o) {
         if (0 == this.name.compareTo(o.name)) {
