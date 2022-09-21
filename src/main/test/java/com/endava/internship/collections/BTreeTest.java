@@ -4,12 +4,14 @@ package com.endava.internship.collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class BTreeTest {
 
     private Student student1;
-    private Student student2;
     private Student student3;
     private Student student4;
     private Student student5;
@@ -21,7 +23,6 @@ public class BTreeTest {
     void setUp() {
         tree = new BTree();
         student1 = new Student("Rubin", LocalDate.of(2000, 12, 8), "student");
-        student2 = new Student("Rubin", LocalDate.of(2000, 12, 8), "student");
         student3 = new Student("Rubin", LocalDate.of(1999, 12, 8), "student");
         student4 = new Student("Aubin", LocalDate.of(2000, 12, 8), "student");
         student5 = new Student("Catalin", LocalDate.of(2000, 12, 9), "student");
@@ -53,6 +54,7 @@ public class BTreeTest {
         assertTrue(tree.delete(student4));
         assertTrue(tree.delete(student3));
         assertTrue(tree.delete(student1));
+        assertEquals(1,tree.getSize());
     }
 
     @Test
