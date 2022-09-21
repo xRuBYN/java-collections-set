@@ -40,6 +40,7 @@ public class StudentSet implements Set<Student> {
         return new Iterator<Student>() {
             private Stack<Node> stack;
             private Student last;
+
             {
                 stack = new Stack<>();
                 Node current = tree.getHead();
@@ -75,7 +76,6 @@ public class StudentSet implements Set<Student> {
                 Iterator.super.forEachRemaining(action);
             }
         };
-
     }
 
     @Override
@@ -152,13 +152,11 @@ public class StudentSet implements Set<Student> {
     @Override
     public boolean removeAll(Collection<?> collection) {
         for (Object student : collection) {
-            if (!remove(student)) {
+            if (!this.remove(student)) {
                 return false;
             }
         }
         return true;
     }
-
-
 }
 
