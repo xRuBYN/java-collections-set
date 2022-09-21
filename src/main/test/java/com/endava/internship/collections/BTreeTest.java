@@ -3,12 +3,7 @@ package com.endava.internship.collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestReporter;
-
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.TreeSet;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BTreeTest {

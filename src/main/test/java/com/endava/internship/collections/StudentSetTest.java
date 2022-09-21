@@ -1,7 +1,7 @@
 package com.endava.internship.collections;
-import com.endava.internship.collections.Student;
-import com.endava.internship.collections.StudentSet;
-import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
