@@ -1,3 +1,4 @@
+package com.endava.internship.collections;
 import com.endava.internship.collections.Student;
 import com.endava.internship.collections.StudentSet;
 import org.junit.jupiter.api.*;
@@ -17,7 +18,6 @@ public class StudentSetTest {
     private Student student4;
     private Student student5;
     private Student student6;
-
     private Student student7;
     @BeforeEach
     void setUp() {
