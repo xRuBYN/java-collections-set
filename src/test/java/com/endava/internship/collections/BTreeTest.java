@@ -32,21 +32,21 @@ public class BTreeTest {
     }
 
     @Test
-    public void whenWeAddAnElementInTreeSizeShouldBeMoreThanZero() {
+    public void whenAddAnElementInTreeSizeShouldBeMoreThanZero() {
         tree.addNode(student1);
 
         assertEquals(1,tree.getSize());
     }
 
     @Test
-    public void whenWeAddExistentElementSizeNotShouldChange() {
+    public void whenAddExistentElementSizeNotShouldChange() {
         tree.addNode(student1);
         tree.addNode(student1);
         assertEquals(1,tree.getSize());
     }
 
     @Test
-    public void whenWeDeleteAnExistentElementInOurSetMethodShouldReturnTrue() {
+    public void whenDeleteAnExistentElementInOurSetMethodShouldReturnTrue() {
         tree.addNode(student1);
         tree.addNode(student3);
         tree.addNode(student4);
@@ -58,27 +58,30 @@ public class BTreeTest {
     }
 
     @Test
-    public void whenWeDeleteAnElementThanNotExistInOurSetMethodShouldReturnFalse() {
+    public void whenDeleteAnElementThanNotExistInOurSetMethodShouldReturnFalse() {
         tree.addNode(student1);
         assertFalse(tree.delete(student5));
+        assertEquals(1,tree.getSize());
     }
 
     @Test
-    public void whenWeHaveTheRightAndLeftNodeAndWeWishDeleteThatNode() {
+    public void whenHaveTheRightAndLeftNodeAndWeWishDeleteThatNode() {
         tree.addNode(student6);
         tree.addNode(student7);
         tree.addNode(student8);
         assertTrue(tree.delete(student6));
+        assertEquals(2,tree.getSize());
     }
 
     @Test
-    public void whenWeHaveOnlyOneElementInOurSetAndUseMethodDelete() {
+    public void whenHaveOnlyOneElementInOurSetAndUseMethodDelete() {
         tree.addNode(student1);
         assertTrue(tree.delete(student1));
+        assertEquals(0,tree.getSize());
     }
 
     @Test
-    public void whenWeTransformOurTreeInArrayWeShouldHaveSameResultWithTheSortedArray() {
+    public void whenTransformOurTreeInArrayWeShouldHaveSameResultWithTheSortedArray() {
         Object[] arr = {student4,student5,student3};
         tree.addNode(student5);
         tree.addNode(student3);
@@ -88,14 +91,14 @@ public class BTreeTest {
     }
 
     @Test
-    public void whenWeSearchAnElementAndItExistSearchMethodeShouldReturnTrue() {
+    public void whenSearchAnElementAndItExistSearchMethodeShouldReturnTrue() {
         tree.addNode(student5);
         tree.addNode(student3);
         assertTrue(tree.searchElement(tree.getHead(),student3));
     }
 
     @Test
-    public void whenWeTraversInOrderOurTreeWe_expectedAnStringWithOurElements() {
+    public void whenTraversInOrderOurTreeWe_expectedAnStringWithOurElements() {
         tree.addNode(student1);
         tree.addNode(student3);
         assertEquals("Student{name='Rubin', dateOfBirth=1999-12-08, details='student'}\n" +
